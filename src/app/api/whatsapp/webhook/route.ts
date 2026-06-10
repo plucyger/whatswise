@@ -7,6 +7,7 @@ import { findExistingContact, isUniqueViolation } from '@/lib/contacts/dedupe'
 import { verifyMetaWebhookSignature } from '@/lib/whatsapp/webhook-signature'
 import { runAutomationsForTrigger } from '@/lib/automations/engine'
 import { dispatchInboundToFlows } from '@/lib/flows/engine'
+import { dispatchInboundToAIAgent } from '@/lib/ai/engine'
 import {
   handleTemplateWebhookChange,
   isTemplateWebhookField,
@@ -677,21 +678,48 @@ async function processMessage(
   })
   const flowConsumed = flowResult.consumed
 
+  // ============================================================
+  // AI agent dispatch — second engine in the chain.
+  //
+  // Runs only when no flow consumed the message: an authored bot
+  // journey always outranks the free-form agent, so a business
+  // can keep deterministic flows for the paths it cares about and
+  // let the AI handle everything else.
+  //
+  // Text turns only — interactive replies (button/list taps) are
+  // flow navigation by definition. Awaited like flows because the
+  // automations decision below depends on `consumed`. The engine
+  // never throws and self-disables when accounts.ai_enabled is
+  // false or ANTHROPIC_API_KEY is absent, so non-AI accounts pay
+  // one indexed SELECT, same as flowless accounts do for flows.
+  // ============================================================
+  const inboundText = contentText ?? message.text?.body ?? ''
+  let aiConsumed = false
+  if (!flowConsumed && !interactiveReplyId) {
+    const aiResult = await dispatchInboundToAIAgent({
+      accountId,
+      userId: configOwnerUserId,
+      contactId: contactRecord.id,
+      conversationId: conversation.id,
+      message: { text: inboundText, meta_message_id: message.id },
+    })
+    aiConsumed = aiResult.consumed
+  }
+
   // Fire any automations that react to this webhook event. All dispatches
   // run here (not earlier) so the contact, conversation, and inbound
   // message all exist before any step — including send_message — runs.
   // Fire-and-forget: a slow or failing automation must not block the
   // webhook's 200 OK response to Meta.
-  const inboundText = contentText ?? message.text?.body ?? ''
   const automationTriggers: (
     | 'new_contact_created'
     | 'first_inbound_message'
     | 'new_message_received'
     | 'keyword_match'
   )[] = []
-  // Content-level triggers are suppressed when a flow consumed the
-  // message — see the comment block above.
-  if (!flowConsumed) {
+  // Content-level triggers are suppressed when a flow OR the AI agent
+  // consumed the message — see the comment blocks above.
+  if (!flowConsumed && !aiConsumed) {
     automationTriggers.push('new_message_received', 'keyword_match')
   }
   // new_contact_created fires only when the webhook just auto-created the
