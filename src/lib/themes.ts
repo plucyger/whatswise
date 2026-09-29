@@ -82,7 +82,7 @@ export const ACCENTS: ReadonlyArray<AccentMeta> = [
     id: "teal",
     name: "Teal",
     tagline: "The default — calm, soft, and easy on the eyes.",
-    swatch: { light: "oklch(0.532 0.1 195)", dark: "oklch(0.75 0.115 190)" },
+    swatch: { light: "oklch(0.5 0.1 195)", dark: "oklch(0.75 0.115 190)" },
   },
   {
     id: "ocean",

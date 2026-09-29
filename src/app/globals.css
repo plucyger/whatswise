@@ -67,6 +67,10 @@
  * `:root` / `.dark` hold the full palette with the default Teal
  * accent. Accent blocks below override just the primary family, per
  * mode. Keep `src/lib/themes.ts` swatches in sync with these.
+ *
+ * One deliberate deviation from the spec: light-mode teal primary is
+ * L 0.50 (spec: 0.532) so `text-primary` clears WCAG AA 4.5:1 on the
+ * page background, muted surfaces and the sidebar's active pill.
  * ============================================================ */
 
 :root {
@@ -78,7 +82,7 @@
   --card-foreground: oklch(0.23 0.03 225);
   --popover: oklch(0.999 0.002 205);
   --popover-foreground: oklch(0.23 0.03 225);
-  --primary: oklch(0.532 0.1 195);
+  --primary: oklch(0.5 0.1 195);
   --primary-foreground: oklch(0.99 0.004 195);
   --secondary: oklch(0.94 0.014 205);
   --secondary-foreground: oklch(0.23 0.03 225);
@@ -89,8 +93,8 @@
   --destructive: oklch(0.49 0.17 25);
   --border: oklch(0.905 0.014 205);
   --input: oklch(0.632 0.02 205);
-  --ring: oklch(0.532 0.1 195);
-  --chart-1: oklch(0.532 0.1 195);
+  --ring: oklch(0.5 0.1 195);
+  --chart-1: oklch(0.5 0.1 195);
   --chart-2: oklch(0.472 0.11 235);
   --chart-3: oklch(0.6 0.15 85);
   --chart-4: oklch(0.55 0.14 310);
@@ -100,10 +104,10 @@
   --warning: oklch(0.478 0.14 78);
   --sidebar: oklch(0.985 0.006 205);
   --sidebar-foreground: oklch(0.23 0.03 225);
-  --sidebar-primary: oklch(0.532 0.1 195);
+  --sidebar-primary: oklch(0.5 0.1 195);
   --sidebar-primary-foreground: oklch(0.99 0.004 195);
   --sidebar-border: oklch(0.905 0.014 205);
-  --sidebar-ring: oklch(0.532 0.1 195);
+  --sidebar-ring: oklch(0.5 0.1 195);
   --sidebar-accent: color-mix(in oklab, var(--primary) 12%, transparent);
   --sidebar-accent-foreground: var(--foreground);
 }

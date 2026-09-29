@@ -22,7 +22,7 @@ export default function Icon() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "#007e7e", // default teal --primary (light mode)
+          background: "#007475", // default teal --primary (light mode)
           borderRadius: 6,
         }}
       >
