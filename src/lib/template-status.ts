@@ -20,11 +20,11 @@ export const templateStatusConfig: Record<
 > = {
   DRAFT: {
     label: 'Draft',
-    classes: 'bg-slate-600/20 text-slate-400 border-slate-600/30',
+    classes: 'bg-foreground/5 text-muted-foreground border-foreground/10',
   },
   PENDING: {
     label: 'Pending',
-    classes: 'bg-yellow-600/20 text-yellow-400 border-yellow-600/30',
+    classes: 'bg-warning/20 text-warning border-warning/30',
   },
   APPROVED: {
     label: 'Approved',
@@ -32,22 +32,22 @@ export const templateStatusConfig: Record<
   },
   REJECTED: {
     label: 'Rejected',
-    classes: 'bg-red-600/20 text-red-400 border-red-600/30',
+    classes: 'bg-destructive/20 text-destructive border-destructive/30',
   },
   PAUSED: {
     label: 'Paused',
-    classes: 'bg-orange-600/20 text-orange-400 border-orange-600/30',
+    classes: 'bg-orange-600/20 text-orange-600 dark:text-orange-400 border-orange-600/30',
   },
   DISABLED: {
     label: 'Disabled',
-    classes: 'bg-red-900/30 text-red-500 border-red-900/40',
+    classes: 'bg-destructive/5 text-destructive border-destructive/30',
   },
   IN_APPEAL: {
     label: 'In Appeal',
-    classes: 'bg-blue-600/20 text-blue-400 border-blue-600/30',
+    classes: 'bg-blue-600/20 text-blue-600 dark:text-blue-400 border-blue-600/30',
   },
   PENDING_DELETION: {
     label: 'Pending Deletion',
-    classes: 'bg-slate-700/30 text-slate-500 border-slate-700/40',
+    classes: 'bg-foreground/5 text-muted-foreground border-foreground/5',
   },
 };

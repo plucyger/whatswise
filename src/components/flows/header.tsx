@@ -53,11 +53,11 @@ export function EditorHeader() {
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex items-center gap-2 text-xs text-slate-500">
+      <div className="flex items-center gap-2 text-xs text-muted-foreground">
         <button
           type="button"
           onClick={() => router.push("/flows")}
-          className="inline-flex items-center gap-1 hover:text-slate-300"
+          className="inline-flex items-center gap-1 hover:text-foreground/80"
         >
           <ArrowLeft className="h-3 w-3" />
           Flows
@@ -72,12 +72,12 @@ export function EditorHeader() {
               setState((s) => ({ ...s, name: e.target.value }))
             }
             placeholder="Flow name"
-            className="max-w-md bg-slate-900 text-lg font-semibold"
+            className="max-w-md bg-card text-lg font-semibold"
           />
           <StatusBadge status={state.status} />
           {dirty && (
             <span
-              className="inline-flex shrink-0 items-center gap-1 text-[10px] font-medium uppercase tracking-wide text-amber-300"
+              className="inline-flex shrink-0 items-center gap-1 text-[10px] font-medium uppercase tracking-wide text-warning"
               title="Unsaved changes — hit Save to persist"
               aria-live="polite"
             >
@@ -99,7 +99,7 @@ export function EditorHeader() {
             variant="ghost"
             size="sm"
             onClick={() => void deleteFlow()}
-            className="text-red-400 hover:bg-red-500/10 hover:text-red-300"
+            className="text-destructive hover:bg-destructive/10 hover:text-destructive"
           >
             <Trash2 className="h-3.5 w-3.5" />
             Delete
@@ -154,7 +154,7 @@ export function EditorHeader() {
           setState((s) => ({ ...s, description: e.target.value }))
         }
         placeholder="Optional description (internal — customers don't see this)"
-        className="bg-slate-900 text-sm"
+        className="bg-card text-sm"
       />
     </div>
   );
@@ -162,9 +162,9 @@ export function EditorHeader() {
 
 function StatusBadge({ status }: { status: BuilderState["status"] }) {
   const cls = {
-    draft: "border-slate-700 bg-slate-800 text-slate-300",
-    active: "border-emerald-600/40 bg-emerald-500/10 text-emerald-300",
-    archived: "border-slate-700 bg-slate-800/50 text-slate-500",
+    draft: "border-foreground/15 bg-muted text-foreground/80",
+    active: "border-success/40 bg-success/10 text-success",
+    archived: "border-foreground/15 bg-muted/50 text-muted-foreground",
   }[status];
   return (
     <Badge variant="outline" className={cn("shrink-0", cls)}>

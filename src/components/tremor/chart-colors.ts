@@ -14,6 +14,14 @@
 export type ColorUtility = "bg" | "stroke" | "fill" | "text"
 
 export const chartColors = {
+  // wacrm addition: follows the active accent (`--chart-1`), so the
+  // chart re-tints with the accent picker and light/dark mode.
+  primary: {
+    bg: "bg-chart-1",
+    stroke: "stroke-chart-1",
+    fill: "fill-chart-1",
+    text: "text-chart-1",
+  },
   blue: {
     bg: "bg-blue-500",
     stroke: "stroke-blue-500",

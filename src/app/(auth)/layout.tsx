@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { ModeToggle } from "@/components/layout/mode-toggle";
 
 // Shared metadata for auth pages (login / signup / forgot-password).
 // None of these should be indexed — they'd compete with the marketing
@@ -20,5 +21,12 @@ export const metadata: Metadata = {
 };
 
 export default function AuthLayout({ children }: { children: ReactNode }) {
-  return children;
+  // Signed-out visitors get the same Light / Dark / System switch as
+  // the app header, pinned to the corner so it stays out of the form.
+  return (
+    <>
+      <ModeToggle className="fixed right-4 top-4 z-50" />
+      {children}
+    </>
+  );
 }

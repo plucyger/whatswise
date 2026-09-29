@@ -2,63 +2,107 @@
 
 import { Check } from "lucide-react";
 
+import { MODE_OPTIONS, useHydrated } from "@/components/layout/mode-toggle";
 import { useTheme } from "@/hooks/use-theme";
-import { THEMES, type ThemeId } from "@/lib/themes";
+import { ACCENTS, type AccentMeta } from "@/lib/themes";
 import { cn } from "@/lib/utils";
 
 /**
- * Appearance panel — color-theme picker.
+ * Appearance panel — color mode + accent picker.
  *
- * Click a card → applies + persists immediately. No save button:
- * the whole change is a single CSS-variable swap on <html>, there's
- * nothing to roll back. The active card carries a check chip + a
- * primary-tinted border so the current pick is obvious.
+ * Click an option → applies + persists immediately. No save button:
+ * both are a class / attribute swap on <html>, there's nothing to
+ * roll back. The active option carries a check chip + a primary-tinted
+ * border so the current pick is obvious.
  *
  * Persistence: localStorage only (device-scoped). The boot script in
  * layout.tsx replays the choice before first paint on subsequent
  * loads.
  */
 export function AppearancePanel() {
-  const { theme, setTheme } = useTheme();
-  return (
-    <section className="space-y-4">
-      <div>
-        <h2 className="text-lg font-semibold text-white">Color theme</h2>
-        <p className="mt-1 text-sm text-slate-400">
-          Pick the accent color used across the app. All themes stay
-          dark — only the primary color (buttons, active nav, badges)
-          changes. Saved to this device.
-        </p>
-      </div>
+  const { mode, setMode, accent, setAccent, resolvedMode } = useTheme();
+  // Saved choices live in localStorage, so the server render can't
+  // know them — hold the "active" markers until we're on the client.
+  const hydrated = useHydrated();
 
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {THEMES.map((t) => (
-          <ThemeCard
-            key={t.id}
-            id={t.id}
-            name={t.name}
-            tagline={t.tagline}
-            swatch={t.swatch}
-            isActive={t.id === theme}
-            onPick={() => setTheme(t.id)}
-          />
-        ))}
-      </div>
-    </section>
+  return (
+    <div className="space-y-8">
+      <section className="space-y-4">
+        <div>
+          <h2 className="text-lg font-semibold text-foreground">Mode</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Light, dark, or follow your device&apos;s setting. Saved to
+            this device.
+          </p>
+        </div>
+        <div
+          role="radiogroup"
+          aria-label="Color mode"
+          className="grid max-w-md grid-cols-3 gap-2"
+        >
+          {MODE_OPTIONS.map((opt) => {
+            const active = hydrated && mode === opt.id;
+            return (
+              <button
+                key={opt.id}
+                type="button"
+                role="radio"
+                aria-checked={active}
+                onClick={() => setMode(opt.id)}
+                className={cn(
+                  "flex flex-col items-center gap-2 rounded-lg border bg-card px-3 py-3 text-sm font-medium shadow-card transition-colors",
+                  active
+                    ? "border-primary/60 text-primary ring-2 ring-primary/40"
+                    : "border-border text-muted-foreground hover:border-foreground/15 hover:bg-muted hover:text-foreground",
+                )}
+              >
+                <opt.icon className="h-5 w-5" />
+                {opt.label}
+              </button>
+            );
+          })}
+        </div>
+      </section>
+
+      <section className="space-y-4">
+        <div>
+          <h2 className="text-lg font-semibold text-foreground">
+            Accent color
+          </h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            The color used for buttons, active navigation, and badges.
+            Every accent is tuned for both light and dark mode. Saved to
+            this device.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {ACCENTS.map((a) => (
+            <AccentCard
+              key={a.id}
+              accent={a}
+              swatch={
+                hydrated && resolvedMode === "light"
+                  ? a.swatch.light
+                  : a.swatch.dark
+              }
+              isActive={hydrated && a.id === accent}
+              onPick={() => setAccent(a.id)}
+            />
+          ))}
+        </div>
+      </section>
+    </div>
   );
 }
 
-function ThemeCard({
-  id,
-  name,
-  tagline,
+function AccentCard({
+  accent,
   swatch,
   isActive,
   onPick,
 }: {
-  id: ThemeId;
-  name: string;
-  tagline: string;
+  accent: AccentMeta;
   swatch: string;
   isActive: boolean;
   onPick: () => void;
@@ -68,12 +112,12 @@ function ThemeCard({
       type="button"
       onClick={onPick}
       aria-pressed={isActive}
-      aria-label={`Use ${name} theme`}
+      aria-label={`Use ${accent.name} accent`}
       className={cn(
-        "flex flex-col gap-3 rounded-lg border bg-card p-4 text-left transition-colors",
+        "flex flex-col gap-3 rounded-lg border bg-card p-4 text-left shadow-card transition-colors",
         isActive
           ? "border-primary/60 ring-2 ring-primary/40"
-          : "border-slate-800 hover:border-slate-700 hover:bg-slate-800/40",
+          : "border-border hover:border-foreground/15 hover:bg-muted/40",
       )}
     >
       <div className="flex items-center justify-between">
@@ -82,7 +126,7 @@ function ThemeCard({
           className="h-8 w-8 shrink-0 rounded-full"
           style={{
             background: swatch,
-            boxShadow: "inset 0 0 0 1px oklch(1 0 0 / 0.15)",
+            boxShadow: "inset 0 0 0 1px oklch(0.5 0 0 / 0.15)",
           }}
         />
         {isActive && (
@@ -93,21 +137,18 @@ function ThemeCard({
         )}
       </div>
       <div>
-        <div className="text-sm font-semibold text-white">{name}</div>
-        <div className="mt-1 text-xs leading-relaxed text-slate-400">
-          {tagline}
+        <div className="text-sm font-semibold text-foreground">
+          {accent.name}
+        </div>
+        <div className="mt-1 text-xs leading-relaxed text-muted-foreground">
+          {accent.tagline}
         </div>
       </div>
-      <div
-        className="mt-1 flex h-2 overflow-hidden rounded-full"
-        aria-hidden
-      >
-        <span className="flex-1" style={{ background: swatch }} />
-        <span className="w-3 bg-slate-700" />
-        <span className="w-3 bg-slate-800" />
-        <span className="w-3 bg-slate-900" />
+      {/* Light + dark swatch strip so you can see both variants. */}
+      <div className="mt-1 flex h-2 overflow-hidden rounded-full" aria-hidden>
+        <span className="flex-1" style={{ background: accent.swatch.light }} />
+        <span className="flex-1" style={{ background: accent.swatch.dark }} />
       </div>
-      <span className="sr-only">Theme id: {id}</span>
     </button>
   );
 }
