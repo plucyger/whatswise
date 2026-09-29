@@ -40,7 +40,7 @@ interface AccountSummary {
   id: string;
   name: string;
   /** Default deal currency (ISO-4217). NOT NULL DEFAULT 'KES' in the
-   *  DB (migrations 021 / 023); narrowed to DEFAULT_CURRENCY when absent. */
+   *  DB (migrations 021 / 025 / 026); narrowed to DEFAULT_CURRENCY when absent. */
   default_currency: string;
 }
 

@@ -1,5 +1,5 @@
 -- ============================================================
--- 023_default_currency_kes
+-- 026_default_currency_kes
 --
 -- WhatsWise is used by Kenyan businesses, so the default deal
 -- currency becomes KES (Kenyan Shilling) instead of USD.
