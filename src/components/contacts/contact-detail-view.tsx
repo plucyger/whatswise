@@ -32,7 +32,7 @@ import {
   Trash2,
   Save,
   X,
-  DollarSign,
+  Banknote,
 } from 'lucide-react';
 
 interface ContactDetailViewProps {
@@ -656,7 +656,7 @@ export function ContactDetailView({
                         </div>
                         <div className="mt-1.5 flex items-center justify-between text-xs text-muted-foreground">
                           <span className="flex items-center gap-1">
-                            <DollarSign className="size-3" />
+                            <Banknote className="size-3" />
                             {formatCurrency(
                               deal.value ?? 0,
                               deal.currency || defaultCurrency,
