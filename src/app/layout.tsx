@@ -29,8 +29,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "wacrm",
-    template: "%s — wacrm",
+    default: "WhatsWise",
+    template: "%s — WhatsWise",
   },
   description: "Self-hostable CRM template for WhatsApp.",
   robots: {

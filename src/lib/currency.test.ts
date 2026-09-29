@@ -14,8 +14,13 @@ describe("formatCurrency", () => {
     expect(out).not.toContain(".00");
   });
 
-  it("defaults to USD when no currency is given", () => {
-    expect(formatCurrency(10)).toBe(formatCurrency(10, DEFAULT_CURRENCY));
+  it("defaults to KES when no currency is given", () => {
+    expect(DEFAULT_CURRENCY).toBe("KES");
+    expect(formatCurrency(10)).toBe(formatCurrency(10, "KES"));
+  });
+
+  it("offers KES first in the picker", () => {
+    expect(CURRENCIES[0].code).toBe("KES");
   });
 
   it("treats an empty-string currency as the default", () => {
@@ -57,6 +62,11 @@ describe("formatCurrencyShort", () => {
   it("uses the matching symbol for non-USD currencies", () => {
     expect(formatCurrencyShort(1_000, "EUR")).toBe("€1.0k");
     expect(formatCurrencyShort(1_000, "INR")).toBe("₹1.0k");
+  });
+
+  it("spaces letter-based symbols like KSh", () => {
+    expect(formatCurrencyShort(1_500_000, "KES")).toBe("KSh 1.5M");
+    expect(formatCurrencyShort(900)).toBe("KSh 900");
   });
 
   it("falls back to the code prefix for unknown currencies (no throw)", () => {

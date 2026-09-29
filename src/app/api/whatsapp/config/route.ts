@@ -229,7 +229,7 @@ export async function POST(request: Request) {
       return NextResponse.json(
         {
           error:
-            'This WhatsApp phone number is already linked to another account on this instance. Each phone number can only be connected to one wacrm user.',
+            'This WhatsApp phone number is already linked to another account on this instance. Each phone number can only be connected to one WhatsWise user.',
         },
         { status: 409 }
       )
@@ -298,7 +298,7 @@ export async function POST(request: Request) {
         return NextResponse.json(
           {
             error:
-              'Two-step verification PIN is required to subscribe this number to wacrm. ' +
+              'Two-step verification PIN is required to subscribe this number to WhatsWise. ' +
               'Set a 6-digit PIN in Meta WhatsApp Manager → Phone Numbers → Two-step verification, then paste it below.',
           },
           { status: 400 }
