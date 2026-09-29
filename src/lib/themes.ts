@@ -88,19 +88,19 @@ export const ACCENTS: ReadonlyArray<AccentMeta> = [
     id: "ocean",
     name: "Ocean",
     tagline: "Clean B2B blue — steady and product-y.",
-    swatch: { light: "oklch(0.52 0.13 250)", dark: "oklch(0.75 0.115 245)" },
+    swatch: { light: "oklch(0.5 0.13 250)", dark: "oklch(0.75 0.115 245)" },
   },
   {
     id: "fern",
     name: "Fern",
     tagline: "Growth-coded green that nods at messaging.",
-    swatch: { light: "oklch(0.52 0.12 160)", dark: "oklch(0.76 0.14 160)" },
+    swatch: { light: "oklch(0.49 0.12 160)", dark: "oklch(0.76 0.14 160)" },
   },
   {
     id: "saffron",
     name: "Saffron",
     tagline: "Warm and friendly — good for SMB teams.",
-    swatch: { light: "oklch(0.54 0.115 65)", dark: "oklch(0.8 0.13 75)" },
+    swatch: { light: "oklch(0.51 0.115 65)", dark: "oklch(0.8 0.13 75)" },
   },
   {
     id: "plum",

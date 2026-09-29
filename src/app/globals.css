@@ -158,26 +158,28 @@
  * primary family for the active mode. Teal is the default and
  * lives in :root / .dark above, so it needs no block here.
  *
- * Every light primary clears 4.5:1 against its foreground (white
- * text on buttons) and every dark primary clears 7:1.
+ * Every light primary clears WCAG AA 4.5:1 both against its
+ * foreground (white text on buttons) and as `text-primary` on the page
+ * background, muted surfaces and the sidebar's active pill. Every dark
+ * primary clears 7:1.
  * ------------------------------------------------------------ */
 
 html[data-accent="ocean"] {
-  --accent-l: oklch(0.52 0.13 250);
+  --accent-l: oklch(0.5 0.13 250);
   --accent-lf: oklch(0.99 0.004 250);
   --accent-d: oklch(0.75 0.115 245);
   --accent-df: oklch(0.17 0.03 250);
 }
 
 html[data-accent="fern"] {
-  --accent-l: oklch(0.52 0.12 160);
+  --accent-l: oklch(0.49 0.12 160);
   --accent-lf: oklch(0.99 0.004 160);
   --accent-d: oklch(0.76 0.14 160);
   --accent-df: oklch(0.17 0.03 160);
 }
 
 html[data-accent="saffron"] {
-  --accent-l: oklch(0.54 0.115 65);
+  --accent-l: oklch(0.51 0.115 65);
   --accent-lf: oklch(0.99 0.004 65);
   --accent-d: oklch(0.8 0.13 75);
   --accent-df: oklch(0.19 0.035 65);
