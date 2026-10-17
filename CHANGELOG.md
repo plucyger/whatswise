@@ -9,6 +9,34 @@ Versions follow [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 Pre-1.0, `MINOR` bumps cover new modules; `PATCH` bumps cover bug fixes
 and polish.
 
+## [0.3.0] — 2026-06-10 (WhatsWise)
+
+First WhatsWise release on top of the wacrm base: the AI sales agent
+scaffold and a security hardening pass. **Migration required:** apply
+`023_security_hardening.sql` and `024_ai_agent.sql`.
+
+### Added
+
+- **AI sales agent (v1 scaffold).** A third inbound engine —
+  flows → AI agent → automations — answers customer messages with
+  Anthropic Claude when an account opts in (`accounts.ai_enabled`,
+  default off) and `ANTHROPIC_API_KEY` is set. Model routing sends
+  ~90% of turns to Haiku and escalates negotiation/dispute/complex
+  turns to Sonnet; the static system prompt is prompt-cached across
+  tenants. Every turn is audited in `ai_agent_logs` (model, tokens,
+  latency, status) with webhook-redelivery idempotency. Tools, RAG,
+  and escalation rules land in follow-up tickets and have marked
+  extension points in `src/lib/ai/engine.ts`.
+
+### Security
+
+- **Internal SECURITY DEFINER functions are no longer client-callable**
+  (migration 023): EXECUTE revoked from `anon`/`authenticated` on the
+  broadcast counter helpers, trigger functions, and
+  `merge_duplicate_contacts`; `search_path` pinned where it was
+  mutable. Self-authorizing RPCs (invitations, member management) are
+  unchanged.
+
 ## [Unreleased]
 
 Multi-user accounts ship. Every wacrm install is multi-tenant on the
