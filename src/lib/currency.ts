@@ -11,7 +11,7 @@
  */
 
 /** App-wide fallback when no account/deal currency is available. */
-export const DEFAULT_CURRENCY = "USD";
+export const DEFAULT_CURRENCY = "KES";
 
 export interface CurrencyOption {
   /** ISO-4217 code, e.g. "USD". Stored verbatim in the DB. */
@@ -28,6 +28,7 @@ export interface CurrencyOption {
  * list to offer more — nothing else needs to change.
  */
 export const CURRENCIES: CurrencyOption[] = [
+  { code: "KES", label: "Kenyan Shilling", symbol: "KSh" },
   { code: "USD", label: "US Dollar", symbol: "$" },
   { code: "EUR", label: "Euro", symbol: "€" },
   { code: "GBP", label: "British Pound", symbol: "£" },
@@ -47,7 +48,7 @@ export const CURRENCIES: CurrencyOption[] = [
 /**
  * Format a deal value as a currency string. Whole-number output
  * (no minor units) — deal values are tracked to the dollar across
- * the app. `currency` defaults to USD so callers with nothing better
+ * the app. `currency` defaults to KES so callers with nothing better
  * stay safe, but pass the account/deal currency wherever known.
  *
  * Total by design: `Intl.NumberFormat` throws a RangeError on a
@@ -81,15 +82,21 @@ export function formatCurrency(
 
 /**
  * Compact currency for tight spaces (donut center, legend rows):
- * "$1.2M" / "€34.5k" / "₹900". Uses the currency's symbol from
+ * "$1.2M" / "€34.5k" / "KSh 900". Uses the currency's symbol from
  * CURRENCIES, falling back to the code when we don't carry a symbol.
+ * Letter-based symbols ("KSh") get a space so the number stays legible.
  */
 export function formatCurrencyShort(
   value: number,
   currency: string = DEFAULT_CURRENCY,
 ): string {
   const code = currency || DEFAULT_CURRENCY;
-  const symbol = CURRENCIES.find((c) => c.code === code)?.symbol ?? `${code} `;
+  const found = CURRENCIES.find((c) => c.code === code)?.symbol;
+  const symbol = found
+    ? /[A-Za-z]$/.test(found)
+      ? `${found} `
+      : found
+    : `${code} `;
   const v = Number(value || 0);
   if (v >= 1_000_000) return `${symbol}${(v / 1_000_000).toFixed(1)}M`;
   if (v >= 1_000) return `${symbol}${(v / 1_000).toFixed(1)}k`;

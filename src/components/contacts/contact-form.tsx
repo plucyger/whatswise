@@ -223,12 +223,12 @@ export function ContactForm({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="bg-slate-900 border-slate-700 text-slate-200 sm:max-w-md">
+      <DialogContent className="bg-card border-foreground/15 text-foreground sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-white">
+          <DialogTitle className="text-foreground">
             {isEdit ? 'Edit Contact' : 'Add Contact'}
           </DialogTitle>
-          <DialogDescription className="text-slate-400">
+          <DialogDescription className="text-muted-foreground">
             {isEdit
               ? 'Update the contact details below.'
               : 'Fill in the details to create a new contact.'}
@@ -237,7 +237,7 @@ export function ContactForm({
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="cf-name" className="text-slate-300">
+            <Label htmlFor="cf-name" className="text-foreground/80">
               Name
             </Label>
             <Input
@@ -245,13 +245,13 @@ export function ContactForm({
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="John Doe"
-              className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-500"
+              className="bg-muted border-foreground/15 text-foreground placeholder:text-muted-foreground"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="cf-phone" className="text-slate-300">
-              Phone <span className="text-red-400">*</span>
+            <Label htmlFor="cf-phone" className="text-foreground/80">
+              Phone <span className="text-destructive">*</span>
             </Label>
             <Input
               id="cf-phone"
@@ -262,14 +262,14 @@ export function ContactForm({
               }}
               onBlur={checkDuplicate}
               placeholder="+1 234 567 8900"
-              className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-500"
+              className="bg-muted border-foreground/15 text-foreground placeholder:text-muted-foreground"
             />
             {dupMatch ? (
               <div
                 className={`flex items-start gap-2 rounded-md border px-2.5 py-2 text-xs ${
                   dupMatch.exact
-                    ? 'border-red-500/40 bg-red-500/10 text-red-300'
-                    : 'border-amber-500/40 bg-amber-500/10 text-amber-300'
+                    ? 'border-destructive/40 bg-destructive/10 text-destructive'
+                    : 'border-warning/40 bg-warning/10 text-warning'
                 }`}
               >
                 <AlertTriangle className="mt-0.5 size-3.5 shrink-0" />
@@ -291,14 +291,14 @@ export function ContactForm({
                 </div>
               </div>
             ) : (
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-muted-foreground">
                 Include country code, e.g. +1 for US
               </p>
             )}
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="cf-email" className="text-slate-300">
+            <Label htmlFor="cf-email" className="text-foreground/80">
               Email
             </Label>
             <Input
@@ -307,12 +307,12 @@ export function ContactForm({
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="john@example.com"
-              className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-500"
+              className="bg-muted border-foreground/15 text-foreground placeholder:text-muted-foreground"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="cf-company" className="text-slate-300">
+            <Label htmlFor="cf-company" className="text-foreground/80">
               Company
             </Label>
             <Input
@@ -320,19 +320,19 @@ export function ContactForm({
               value={company}
               onChange={(e) => setCompany(e.target.value)}
               placeholder="Acme Inc."
-              className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-500"
+              className="bg-muted border-foreground/15 text-foreground placeholder:text-muted-foreground"
             />
           </div>
 
           <div className="space-y-2">
-            <Label className="text-slate-300">Tags</Label>
+            <Label className="text-foreground/80">Tags</Label>
             {loadingTags ? (
-              <div className="flex items-center gap-2 text-slate-500 text-sm">
+              <div className="flex items-center gap-2 text-muted-foreground text-sm">
                 <Loader2 className="size-3 animate-spin" />
                 Loading tags...
               </div>
             ) : tags.length === 0 ? (
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-muted-foreground">
                 No tags available. Create tags in Settings.
               </p>
             ) : (
@@ -346,7 +346,7 @@ export function ContactForm({
                       onClick={() => toggleTag(tag.id)}
                       className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium transition-colors cursor-pointer ${
                         selected
-                          ? 'ring-2 ring-primary ring-offset-1 ring-offset-slate-900'
+                          ? 'ring-2 ring-primary ring-offset-1 ring-offset-background'
                           : 'opacity-60 hover:opacity-100'
                       }`}
                       style={{
@@ -363,12 +363,12 @@ export function ContactForm({
             )}
           </div>
 
-          <DialogFooter className="bg-slate-900 border-slate-700">
+          <DialogFooter className="bg-card border-foreground/15">
             <Button
               type="button"
               variant="outline"
               onClick={() => onOpenChange(false)}
-              className="border-slate-700 text-slate-300 hover:bg-slate-800"
+              className="border-foreground/15 text-foreground/80 hover:bg-muted"
             >
               Cancel
             </Button>
